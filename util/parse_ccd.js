@@ -5,7 +5,7 @@ function readInCcdFile(fileName) {
   return JSON.parse(rawData);
 }
 
-function parseCCD(baseDir, ignoredStates, ignoredEvents, roles) {
+function parseCCD(baseDir, ignoredStates, ignoredEvents, roles, hideUnauthorisedEvents) {
   const events = readInCcdFile(baseDir + '/CaseEvent.json');
   const eventAuthorisations = readInCcdFile(baseDir + '/AuthorisationCaseEvent.json');
   const stateAuthorisations = readInCcdFile(baseDir + '/AuthorisationCaseState.json');
@@ -71,12 +71,14 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles) {
       `${link.text} (read only)`;
   });
 
-  const combinedLinksNotForRole = {};
-  outputNotForRole.forEach(link => {
-    combinedLinks[`${link.from} --> ${link.to}`] = combinedLinks[`${link.from} --> ${link.to}`] ?
-      combinedLinks[`${link.from} --> ${link.to}`] + `\\n <strike>${link.text}</strike>` :
-      ` <strike>${link.text}</strike>`;
-  });
+  if (!hideUnauthorisedEvents) {
+    const combinedLinksNotForRole = {};
+    outputNotForRole.forEach(link => {
+      combinedLinks[`${link.from} --> ${link.to}`] = combinedLinks[`${link.from} --> ${link.to}`] ?
+        combinedLinks[`${link.from} --> ${link.to}`] + `\\n <strike>${link.text}</strike>` :
+        ` <strike>${link.text}</strike>`;
+    });
+  }
 
   let authorisedStates = [];
   let unauthorisedStates = [];
@@ -113,13 +115,6 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles) {
     plantUmlString += `${item} : ${combinedLinks[item]}\n`;
   });
 
-  Object.keys(combinedLinksReadOnly).forEach(function (item) {
-    plantUmlString += `${item} : ${combinedLinksReadOnly[item]}\n`;
-  });
-
-  Object.keys(combinedLinksNotForRole).forEach(function (item) {
-    plantUmlString += `${item} : ${combinedLinksNotForRole[item]}\n`;
-  });
   plantUmlString += '@enduml\n\n';
 
   //fs.writeFileSync(outputFile, plantUmlString);

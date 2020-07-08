@@ -23,6 +23,10 @@ case $i in
       ROLES="${i#*=}"
       shift # past argument=value
       ;;
+    -u|--hideUnauthorised)
+      HIDE_UNAUTHORISED="true"
+      shift # past argument=value
+      ;;
     -h|--help)
       echo "Usage ./generate_state_diagram.sh [path to ccd def] [options]"
       echo ""
@@ -50,6 +54,6 @@ echo "Ignored states   = [${IGNORED_STATES}]"
 echo "Ignored events   = [${IGNORED_EVENTS}]"
 echo "Roles            = [${ROLES}]"
 
-node ./generate_state_diagram.js "${DEFINITION_LOCATION}" "${IGNORED_STATES}" "${IGNORED_EVENTS}" "${ROLES}" > ${OUTPUT_FILENAME}.txt
+node ./generate_state_diagram.js "${DEFINITION_LOCATION}" "${IGNORED_STATES}" "${IGNORED_EVENTS}" "${ROLES}" "${HIDE_UNAUTHORISED}" > ${OUTPUT_FILENAME}.txt
 java -jar lib/plantuml.jar ${OUTPUT_FILENAME}.txt
 rm ${OUTPUT_FILENAME}.txt
