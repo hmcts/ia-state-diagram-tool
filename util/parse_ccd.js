@@ -42,6 +42,13 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles) {
     });
   }) : output;
 
+  const outputForRoleReadOnly = (roles.length > 0) ? output.filter(event => {
+    return event.text === 'start' || eventAuthorisations.some(eventAuthorisation => {
+      return eventAuthorisation.CaseEventID === event.text &&
+        roles.indexOf(eventAuthorisation.UserRole) >= 0 && eventAuthorisation.CRUD.indexOf('C') == -1;
+    });
+  }) : [];
+
   const outputNotForRole = (roles.length > 0) ? output.filter(event => {
     return eventAuthorisations.some(eventAuthorisation => {
       return eventAuthorisation.CaseEventID === event.text &&
@@ -55,6 +62,13 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles) {
     combinedLinks[`${link.from} --> ${link.to}`] = combinedLinks[`${link.from} --> ${link.to}`] ?
       combinedLinks[`${link.from} --> ${link.to}`] + `\\n ${link.text}` :
       link.text;
+  });
+
+  const combinedLinksReadOnly = {};
+  outputForRoleReadOnly.forEach(link => {
+    combinedLinks[`${link.from} --> ${link.to}`] = combinedLinks[`${link.from} --> ${link.to}`] ?
+      combinedLinks[`${link.from} --> ${link.to}`] + `\\n ${link.text} (read only)` :
+      `${link.text} (read only)`;
   });
 
   const combinedLinksNotForRole = {};
@@ -97,6 +111,10 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles) {
   }
   Object.keys(combinedLinks).forEach(function (item) {
     plantUmlString += `${item} : ${combinedLinks[item]}\n`;
+  });
+
+  Object.keys(combinedLinksReadOnly).forEach(function (item) {
+    plantUmlString += `${item} : ${combinedLinksReadOnly[item]}\n`;
   });
 
   Object.keys(combinedLinksNotForRole).forEach(function (item) {
