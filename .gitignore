@@ -1,0 +1,6 @@
+# Default ignored files
+.idea
+*.png
+*.iml
+yarn.lock
+node_modules
