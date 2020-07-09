@@ -1,4 +1,4 @@
-const { parseCCD } = require('./util/parse_ccd');
+const parseCCD = require('./util/parse_ccd');
 
 function splitInput(input) {
   return input ? input.split(',') : [];

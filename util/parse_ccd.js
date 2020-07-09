@@ -136,4 +136,5 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles, hideUnauthorised
   return createPlantUmlString(unauthorisedStates, roles, combinedLinks);
 }
 
-module.exports = { parseCCD };
+module.exports = parseCCD;
+
