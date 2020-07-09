@@ -5,6 +5,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
+    "test": "exit 0",
     "eslint": "eslint ."
   },
 
