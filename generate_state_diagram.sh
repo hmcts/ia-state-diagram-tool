@@ -31,11 +31,12 @@ case $i in
       echo "Usage ./generate_state_diagram.sh [path to ccd def] [options]"
       echo ""
       echo "where options include:"
-      echo "    -o/--output           file to output state diagram to"
-      echo "    -s/--ignoredStates    comma seperated list of states to ignore"
-      echo "    -e/--ignoredEvents    comma seperated list of events to ignore"
-      echo "    -r/--roles            comma seperated list of roles to build the diagram for"
-      echo "    -h/--help             to display this help message"
+      echo "    -o, --output=...        file to output state diagram to"
+      echo "    -s, --ignoredStates=... comma seperated list of states to ignore, can be a regex that matches the whole state name"
+      echo "    -e, --ignoredEvents=... comma seperated list of events to ignore, can be a regex that matches the whole event name"
+      echo "    -r, --roles=...         comma seperated list of roles to build the diagram for"
+      echo "    -u, --hideUnauthorised  hide any events that a user is unauthoirsed to run or see"
+      echo "    -h, --help              to display this help message"
       exit 0
       ;;
     *)

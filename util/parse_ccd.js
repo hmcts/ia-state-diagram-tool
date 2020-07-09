@@ -23,8 +23,8 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles, hideUnauthorised
       const newPreConditionState = preConditionState === '*' ? 'allStates' : preConditionState;
       const postConditionState = postConditionStates === '*' ? newPreConditionState : postConditionStates;
 
-      if (ignoredStates.indexOf(newPreConditionState) === -1 && ignoredStates.indexOf(postConditionState) === -1) {
-        if (ignoredEvents.indexOf(eventName) === -1) {
+      if (includeState(newPreConditionState, postConditionState, ignoredStates)) {
+        if (includeEvent(eventName, ignoredEvents)) {
           output.push({
             "from": newPreConditionState,
             "to": postConditionState,
@@ -119,6 +119,18 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles, hideUnauthorised
 
   //fs.writeFileSync(outputFile, plantUmlString);
   return plantUmlString;
+}
+
+function arrayDoesNotMatch(eventName, ignoredEvents) {
+  return !ignoredEvents.some(ignoredEvent => new RegExp('^' + ignoredEvent + '$').test(eventName));
+}
+
+function includeEvent(eventName, ignoredEvents) {
+  return arrayDoesNotMatch(eventName, ignoredEvents);
+}
+
+function includeState(preConditionState, postConditionState, ignoredStates) {
+  return arrayDoesNotMatch(preConditionState, ignoredStates) && arrayDoesNotMatch(postConditionState, ignoredStates)
 }
 
 module.exports = {
