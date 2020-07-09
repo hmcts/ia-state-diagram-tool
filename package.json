@@ -1,6 +1,6 @@
 {
   "name": "@hmcts/ia-state-diagram-tool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tool to generate state diagrams from CCD definition",
   "license": "MIT",
   "main": "index.js",
