@@ -8,8 +8,11 @@
     "test": "exit 0",
     "eslint": "eslint ."
   },
-
+  "bin": {
+    "generateStateDiagram": "./generate_state_diagram.js"
+  },
   "dependencies": {
+    "minimist": "^1.2.5"
   },
   "devDependencies": {
     "@hmcts/eslint-config": "^1.4.0",

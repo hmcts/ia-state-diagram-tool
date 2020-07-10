@@ -137,4 +137,3 @@ function parseCCD(baseDir, ignoredStates, ignoredEvents, roles, hideUnauthorised
 }
 
 module.exports = parseCCD;
-
